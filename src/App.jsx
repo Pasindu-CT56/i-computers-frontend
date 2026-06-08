@@ -1,18 +1,27 @@
 
 import './App.css'
-import ProductCard from './components/productCard'
-import { FaHome } from "react-icons/fa";
+import HomePage from './pages/homePage';
+import LoginPage from './pages/loginPage';
+import RegisterPage from './pages/registerPage';
+import { Route, Routes } from 'react-router-dom';
+import AdminPage from './pages/adminPage';
+import TestPage from './pages/testPage';
+import './index.css'
 
 function App() {
 
 
   return (
-    <div>
+    <div className="w-full h-screen" >
+      <Routes>
+        <Route path = "/" element = {<HomePage />} />
+        <Route path = "/login" element = {<LoginPage />} />
+        <Route path = "/register" element = {<RegisterPage />} />
+        <Route path = "/admin/*" element = {<AdminPage />} />
+        <Route path = "/test" element = {<TestPage />} />
+      </Routes>
       
-      <ProductCard name = "Apple iPhone 6s" price = "$100" image = "https://picsum.photos/id/3/200/300"/> 
-      <ProductCard name = "Apple Laptop" price = "$1000" image = "https://picsum.photos/id/0/200/300"/>
-      <ProductCard name = "Women shoes" price = "$50" image = "https://picsum.photos/id/21/200/300"/>
-      <FaHome className = "text-[100px] text-green-700"/>
+      
     </div>
   )
 }
