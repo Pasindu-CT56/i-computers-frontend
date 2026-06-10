@@ -7,12 +7,14 @@ import { Route, Routes } from 'react-router-dom';
 import AdminPage from './pages/adminPage';
 import TestPage from './pages/testPage';
 import './index.css'
+import { Toaster } from 'react-hot-toast';
 
 function App() {
 
 
   return (
     <div className="w-full h-screen" >
+      <Toaster position="top-right"/>
       <Routes>
         <Route path = "/" element = {<HomePage />} />
         <Route path = "/login" element = {<LoginPage />} />
