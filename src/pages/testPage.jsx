@@ -1,4 +1,129 @@
 import { useState } from "react";
+import  uploadMedia  from "../lib/uploadMedia";
+import toast from "react-hot-toast";
+
+
+
+
+
+
+export default function TestPage() {
+
+    const [file, setFiles] = useState(null)
+
+
+    function uploadFiles() {
+
+        uploadMedia(file).then(
+            (res) => {
+                console.log(res);
+            }
+        ).catch(
+            (err) => {
+                console.log(err);
+                toast.error("Error uploading file");
+            })
+
+    
+    }
+
+    /*async function uploadFilesAsync() {
+
+        try {
+            const res = await uploadMedia(file);
+            console.log(res);
+        } catch (err) {
+            console.log(err);
+            toast.error("Error uploading file");
+        }
+    }*/
+
+    return (
+        <div className="w-full h-full flex items-center justify-center">
+            <input type="file" 
+            multiple={true}
+            onChange={
+                (e) => {
+                    setFiles(e.target.files[0]);
+                }
+            } />
+            <button onClick={uploadFiles} className="p-2 bg-green-600 text-white rounded-lg">Submit</button>
+
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*import { useState } from "react";
 import toast from "react-hot-toast";
 
 
@@ -73,7 +198,7 @@ export default function TestPage() {
 
 
 
-/*
+
 export default function TestPage() {
     return (
         <div className="w-full h-full">

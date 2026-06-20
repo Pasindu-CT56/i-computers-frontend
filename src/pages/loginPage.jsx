@@ -1,5 +1,5 @@
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import api from "../lib/api";
@@ -10,6 +10,7 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     function handleLogin() {
 
@@ -35,6 +36,13 @@ export default function LoginPage() {
             //browser store
 
             localStorage.setItem("token", res.data.token);
+
+            if(res.data.isAdmin) {
+                navigate("/admin");
+            }else{
+                navigate("/");
+
+            }
 
         }).catch((err) => {
             console.log(err);
