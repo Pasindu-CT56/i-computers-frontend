@@ -1,4 +1,55 @@
-import { useState } from "react";
+import LoadingAnimation from "../components/loadingAnimation";
+
+
+
+
+
+export default function TestPage() {
+    return (
+
+        <div className="w-[300px] h-[300px]">
+        <LoadingAnimation/>
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*import { useState } from "react";
 import  uploadMedia  from "../lib/uploadMedia";
 import toast from "react-hot-toast";
 
@@ -25,7 +76,7 @@ export default function TestPage() {
             })
 
     
-    }
+    }*/
 
     /*async function uploadFilesAsync() {
 
@@ -38,7 +89,7 @@ export default function TestPage() {
         }
     }*/
 
-    return (
+    /*return (
         <div className="w-full h-full flex items-center justify-center">
             <input type="file" 
             multiple={true}
@@ -51,7 +102,7 @@ export default function TestPage() {
 
         </div>
     )
-}
+}*/
 
 
 
