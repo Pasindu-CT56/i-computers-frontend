@@ -2,6 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import uploadMedia from "../../lib/uploadMedia";
+import { CiCircleInfo } from "react-icons/ci";
+import api from "../../lib/api";
 
 export default function AddProductForm() {
 
@@ -27,6 +29,21 @@ export default function AddProductForm() {
             return
         }
 
+        const productData = {
+            productID : productId,
+            name : name,
+            altNames : [],
+            description : description,
+            images : [],
+            price : price,
+            labeledPrice : labeledPrice,
+            stock : stock,
+            isAvailable : isAvailable,
+            category : category,
+            brand : brand,
+            model : model
+        }
+
         try {
 
             const imageUploadPromises = []
@@ -41,8 +58,22 @@ export default function AddProductForm() {
 
             console.log(imageUploadPromises)
 
-            const imageUrls =  await Promise.all(imageUploadPromises)
+            productData.images =  await Promise.all(imageUploadPromises)
             //const fastestUploadImageUrl = await Promise.race(imageUploadPromises)
+
+            productData.altNames = altNames.split(",")
+
+            const res = await api.post("/products", productData, {
+                headers: {
+                    Authorization: "Bearer "+ token
+                }
+            })
+
+            console.log(res)
+
+            toast.success("Product added successfully")
+
+
 
         }catch(err){
             console.log(err)
@@ -75,7 +106,7 @@ export default function AddProductForm() {
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full h-[40px] p-2 border-2 border-gray-300 rounded-md mb-4" />
                 </div>
                 <div className="w-[45%] h-[100px] flex flex-col p-2">
-                    <label className="text-secondary text-lg font-semibold mb-2">Alternative Names</label>
+                    <label className="text-secondary text-lg font-semibold mb-2 flex items-center gap-2">Alternative Names<span className="h-full flex items-center justify-center italic font-thin"><CiCircleInfo /> Comma-separated </span></label>
                     <input type="text" value={altNames} onChange={(e) => setAltNames(e.target.value)} className="w-full h-[40px] p-2 border-2 border-gray-300 rounded-md mb-4" />
                 </div>
                 <div className="w-full  flex flex-col p-2">
