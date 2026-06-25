@@ -9,7 +9,7 @@ export default function AdminPage() {
         <div className="flex w-full h-full ">
             <div className="flex flex-col shadow-2xl text-secondary w-[360px]  h-full ">
                 <div className="w-full h-[50px] p-2 flex gap-2 items-end mb-2  ">
-                    <img src="/logo.png" alt="Logo" className="h-full " />
+                    <img src="/logo.jpg" alt="Logo" className="h-full " />
                     <span className="text-2xl font-bold">Admin </span>
                 </div>
             

@@ -55,7 +55,7 @@ export default function LoginPage() {
     return (
         <div className="w-full h-full bg-[url('/bg.jpg')] bg-cover bg-center flex justify-center items-center">
             <div className="w-[450px] h-[580px] backdrop-blur-md shadow-2xl rounded-lg p-6 flex flex-col items-center">
-                <img src="logo.png" className="w-[150px] h-[70px] object-cover bg-accent/40 rounded-lg "/>
+                <img src="/logo.webp" className="w-[150px] h-[70px] object-cover bg-accent/40 rounded-lg "/>
                 <h1 className="text-3xl font-bold text-secondary mt-5">Login</h1>
                 
                 <label className="text-secondary text-lg mt-5 w-full font-semibold">Email</label>
