@@ -7,3 +7,22 @@
     --color-accent: #000080
 
 }
+
+.tooltip{
+
+    
+
+}
+
+.tooltip-text{
+
+    
+    display: none;
+
+}
+
+.tooltip:hover .tooltip-text{
+
+    display: block;
+
+}
