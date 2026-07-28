@@ -1,15 +1,24 @@
+import { Link } from "react-router-dom";
+import getFormattedPrice from "../lib/price-format";
 
 export default function ProductCard(props) {
     
-    console.log(props)
+    const product = props.product;
 
     return(
-        <div className="bg-[#5db099] w-60 h-[330.5px]">
+        <Link to={"/overview/"+product.productID} state={product} className="bg-white w-[390px] h-[500px] m-6 shadow-2xl rounded-xl hover:[&_.primary-image]:opacity-0 flex flex-col overflow-hidden">
+            <div className="w-full h-[350px] relative" >
 
-            <img src = {props.image} />
-            <h1>{props.name}</h1>
-            <p>Price: {props.price}</p>
-
-        </div>
+                <img src={product.images[0]} className="w-full h-full absolute"/>
+                <img src={product.images[1]} className="w-full h-full absolute bg-white primary-image transition-opacity duration-700"/>
+            </div>
+            <span className="text-sm text-gray-400 font-thin px-2 mt-2 ">{product.productID}</span>
+            <h1 className="text-lg font-semibold px-2">{product.name}</h1>
+            {
+                product.labeledPrice > product.price && <span className="text-sm text-gray-500 mt-2 line-through px-2">{getFormattedPrice(product.labeledPrice)} </span>
+            }
+            <span className="text-lg font-bold mt-1 px-2">{getFormattedPrice(product.price)}</span>
+            
+        </Link>
     )
 }
