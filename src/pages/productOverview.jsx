@@ -4,6 +4,11 @@ import api from "../lib/api";
 import LoadingAnimation from "../components/loadingAnimation";
 import toast from "react-hot-toast";
 import ImageSlideShow from "../components/imageSlideShow";
+import { BiCategory } from "react-icons/bi";
+import { FaAngleRight } from "react-icons/fa";
+import { HiOutlineBadgeCheck } from "react-icons/hi";
+import getFormattedPrice from "../lib/price-format";
+import { addToCart, getCart } from "../lib/cart";
 
 export default function ProductOverview() {
 
@@ -44,7 +49,47 @@ export default function ProductOverview() {
                     <div className="w-1/2 h-full flex justify-center items-center  ">
                         <ImageSlideShow images={product.images} />
                     </div>
-                    <div className="w-1/2 h-full  ">
+                    <div className="w-1/2 h-full p-8 ">
+                        <h1 className="text-3xl font-semibold">{product.name}
+                            {
+                            product.altNames.map(
+                                (name , index)=>{
+                                    return (
+                                        <span key={index} className="font-normal text-gray-500"> | {name}</span>
+                                    )
+                                }
+                            )
+                            }
+                        </h1>
+                        <p className="text-lg text-gray-600 italic">{product.productID}</p>
+                        <p className="text-xl mt-4 font-thin flex items-center"><BiCategory /><span className="mx-2 font-normal">Category</span><FaAngleRight /> {product.category}</p> 
+                        <p className="text-xl mt-4 font-thin flex items-center"><HiOutlineBadgeCheck /><span className="mx-2 font-normal">{product.brand}</span><FaAngleRight /> {product.model}</p> 
+                        {
+
+                            product.labeledPrice>product.price&&
+                            <span className="text-lg font-normal line-through text-gray-500">{getFormattedPrice(product.labeledPrice)}</span>
+                        
+                        }
+                        <p className="text-3xl font-semibold text-accent mb-4">{getFormattedPrice(product.price)}</p>
+                        <p className="text-lg font-normal text-gray-600 mb-4">{product.description}</p>
+                        <div className="w-full flex gap-2">
+                            <button className="w-[200px] h-[60px] bg-white border-2 border-accent text-accent font-semibold rounded-md hover:bg-accent hover:text-white transition-colors duration-300 cursor-pointer "
+                            onClick={
+                                ()=>{
+                                    addToCart(product,1)
+                                    toast.success("Product added to cart")
+
+                                }
+                            }>Add to Cart</button>
+                            <button className="w-[200px] h-[60px] bg-accent border-2 text-white font-semibold rounded-md hover:bg-white hover:text-accent transition-colors duration-300 cursor-pointer "
+                            onClick={
+                                ()=>{
+                                    const cart = getCart();
+
+                                    console.log(cart)
+                                }
+                            }>Buy Now</button>
+                        </div>
                     </div>
                     
                 </div>

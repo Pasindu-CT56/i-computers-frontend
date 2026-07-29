@@ -13,7 +13,7 @@ export default function ImageSlideShow(props) {
                     images.map(
                         (image, index) => {
                             return (
-                                <img src={image} className={"w-[80px] h-[80px] object-contain cursor-pointer rounded-md border-accent"+(index==activeImageIndex&&"border-2")}
+                                <img src={image} className={"w-[80px] h-[80px] object-contain cursor-pointer rounded-md border-accent"+(index==activeImageIndex && "border-2")}
                                     onClick={() => setActiveImageIndex(index)} />
                             )
                         }
