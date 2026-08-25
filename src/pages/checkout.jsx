@@ -1,11 +1,13 @@
 import { useState } from "react"
-import { addToCart, getCart, getCartTotal } from "../lib/cart"
+import {  getCartTotal } from "../lib/cart"
 import getFormattedPrice from "../lib/price-format"
-import { Link } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
-export default function CartPage() {
+export default function CheckoutPage() {
 
-    const [cart , setCart] = useState(getCart())
+    const location = useLocation()
+
+    const [cart , setCart] = useState(location.state)
     return (
         <div className="w-full h-[calc(100vh-100px)] overflow-y-scroll flex flex-col items-center pb-[180px]">
             {
@@ -27,8 +29,13 @@ export default function CartPage() {
                                             <button 
                                             onClick={
                                                 ()=>{
-                                                    addToCart(item.product , -1)
-                                                    setCart(getCart())
+                                                    if(item.qty>1){
+                                                    
+                                                        const newCart = [ ...cart]
+                                                    
+                                                        newCart[index].qty-=1
+                                                        setCart(newCart)
+                                                    }
                                                 }
                                             }
                                             className="w-[40px] h-full hover:bg-accent hover:text-white text-accent font-semibold hover:bg-accent-dark transition-colors duration-300 cursor-pointer">-</button>
@@ -36,8 +43,10 @@ export default function CartPage() {
                                             <button 
                                             onClick={
                                                 ()=>{
-                                                    addToCart(item.product , 1)
-                                                    setCart(getCart())
+                                                    const newCart = [ ...cart]
+                                                    //{...cart} if it is a JSON
+                                                    newCart[index].qty+=1
+                                                    setCart(newCart)
                                                 }
                                             }
                                             className="w-[40px] h-full hover:bg-accent hover:text-white text-accent font-semibold hover:bg-accent-dark transition-colors duration-300 cursor-pointer">+</button>
@@ -53,9 +62,9 @@ export default function CartPage() {
             }
             
             <div className="w-[550px] min-h-[90px] fixed bottom-2 bg-white shadow-accent my-4 shadow-sm rounded-md overflow-hidden flex flex-row items-center justify-between px-2">
-                <Link state={ cart} to="/checkout" className="bg-accent hover:bg-accent-dark transition-colors duration-300 text-white font-semibold px-4 py-2 rounded-md">
-                    Checkout
-                </Link>
+                <button state={ cart} to="/checkout" className="bg-accent hover:bg-accent-dark transition-colors duration-300 text-white font-semibold px-4 py-2 rounded-md">
+                    Order
+                </button>
                 <span className="text-lg font-semibold text-secondary pr-1 ">{getFormattedPrice(getCartTotal(cart))}</span>
             </div>
         </div>
