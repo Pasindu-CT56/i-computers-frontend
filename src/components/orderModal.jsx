@@ -4,6 +4,7 @@ import getFormattedPrice from "../lib/price-format"
 import { getCartTotal } from "../lib/cart"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
+import api from "../lib/api";
 
 
 export default function OrderModal(props) {
@@ -27,6 +28,45 @@ export default function OrderModal(props) {
             navigate("/login")
             return
         }
+        const orderData = {
+            firstName : firstName,
+            lastName : lastName,
+            addressLine1 : addressLine1,
+            addressLine2 : addressLine2,
+            city : city,
+            postalCode : postalCode,
+            phone : phoneNumber,
+            secondaryPhone : secondaryPhoneNumber,
+            customerNotes : specialNotes,
+            items : []
+        }
+        
+        for(let i=0; i<props.cart.length; i++){
+
+            orderData.items.push({
+                productId : props.cart[i].product.productID,
+                qty : props.cart[i].qty
+            })
+
+        }
+
+        try{
+
+            await api.post("/orders", orderData, {
+                headers : {
+                    Authorization : `Bearer ${token}`
+                }
+            })
+
+            toast.success("Order placed successfully")
+            setModalIsOpen(false)
+            navigate("/products")
+
+        }catch(err){
+            console.log(err)
+            toast.error("Failed to place order")
+        }
+    
 
     }
 
@@ -156,10 +196,7 @@ export default function OrderModal(props) {
                             </div>
                             <div className='w-full sticky bottom-0 h-[70px] bg-[#7979b8] rounded-b-2xl flex flex-row justify-center items-center gap-2 '>
                                 <button
-                                onClick={()=>{
-                                    // Here you can handle the order submission logic
-                                    setModalIsOpen(false)
-                                }}
+                                onClick={handleConfirmOrder}
                                 className='bg-accent/75 hover:bg-accent cursor-pointer transition-colors duration-300 text-white font-semibold px-4 py-2 rounded-md'>
                                     Confirm Order
                                 </button>
