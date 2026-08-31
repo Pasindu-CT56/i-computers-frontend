@@ -4,35 +4,11 @@ import Modal from 'react-modal';
 import getFormattedPrice from "../lib/price-format";
 import formatTimestamp from "../lib/date-format";
 
-import toast from "react-hot-toast"
-import api from "../lib/api";
-export default function AdminOrderDetailsModal(props){
 
-    const refresh = props.refresh
+export default function OrderDetailsModal(props){
     const order = props.order
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [status, setStatus] = useState(order.status)
 
-    async function updateOrderStatus(){
-        try{
-
-            const token = localStorage.getItem("token")
-
-            await api.put("/orders/"+order.orderId+"/"+status, {}, {
-                headers : {
-                    "Authorization" : `Bearer ${token}`
-                }
-            })
-
-            toast.success("Order status updated successfully")
-            refresh()
-            setIsModalOpen(false)
-
-        }catch(err){
-            console.log(err)
-            toast.error("Failed to update order status")
-        }
-    }
 
     return(
         <>
@@ -81,15 +57,7 @@ export default function AdminOrderDetailsModal(props){
                                                 </h1>                                                
                                             </div>
                                             <div className='w-full   flex flex-row justify-center items-center gap-2 text-center border-t-2 border-white text-white'>
-                                                Order Status : <select className="bg-accent text-white rounded-lg px-2 py-1" value={status} 
-                                                onChange={(e) => {
-                                                    setStatus(e.target.value)
-                                                }}>
-                                                    <option value="Pending">Pending</option>
-                                                    <option value="Processing">Processing</option>
-                                                    <option value="Shipped">Shipped</option>
-                                                    <option value="Delivered">Delivered</option>
-                                                </select>
+                                                Order Status : {order.status}
 
                                             </div>                                                    
                                     </div>
@@ -107,9 +75,6 @@ export default function AdminOrderDetailsModal(props){
                                             </div>
                                         ))
                                     }
-                            {status != order.status&& <button onClick={updateOrderStatus} className="sticky bottom-3 right-3 bg-green-500 hover:bg-green-600 p-2 rounded-md text-white font-semibold shadow-2xl">
-                                Update Status
-                            </button>}
                 </div>
             </Modal>
 

@@ -1,29 +1,28 @@
 import { useEffect, useState } from "react";
 import api from "../../lib/api";
 import LoadingAnimation from "../../components/loadingAnimation";
-import getFormattedPrice from "../../lib/price-format";
-import formatTimestamp from "../../lib/date-format";
-import AdminOrderDetailsModal from "../../components/adminOrderDetailsModal";
+import BlockUserModal from "../../components/blockUserModal";
+import ChangeRoleOfUserModal from "../../components/changeRoleOfUserModal";
 
-export default function AdminOrdersPage() {
-    const [orders, setOrders] = useState([]);
+export default function AdminUsersPage() {
+    const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageSize, setPageSize] = useState(3);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [totalOrders, setTotalOrders] = useState(0);
+    const [totalUsers, setTotalUsers] = useState(0);
     useEffect(() => {
         const token = localStorage.getItem("token");
-        api.get("/orders/"+pageSize+"/"+currentPage, {
+        api.get("/users/"+pageSize+"/"+currentPage, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then((response) => {
             if (isLoading) {
                 console.log(response.data);
-                setOrders(response.data.orders);
+                setUsers(response.data.users);
                 setTotalPages(response.data.totalPages);
-                setTotalOrders(response.data.totalCount);
+                setTotalUsers(response.data.totalCount);
                 setIsLoading(false);
             }
         });
@@ -35,10 +34,10 @@ export default function AdminOrdersPage() {
 
             <div className="w-full min-h-[100px] bg-white shadow-md rounded-md flex items-center p-4 justify-between mb-8">
                 {isLoading && <LoadingAnimation />}
-                <h1 className="text-2xl font-semibold text-secondary">Orders</h1>
+                <h1 className="text-2xl font-semibold text-secondary">Users</h1>
 
                 <div className="flex gap-4 justify-center items-center">
-                    <span>{totalOrders} Orders</span>
+                    <span>{totalUsers} Users</span>
                     <button
                         onClick={() => {
                             setIsLoading(true);
@@ -49,43 +48,37 @@ export default function AdminOrdersPage() {
                     </button>
                 </div>
             </div>
-            <table className="w-full bg-white shadow-md rounded-md overflow-hidden text-center mb-[100px] ">
+            <table className="w-full bg-white shadow-md rounded-md overflow-hidden text-center mb-[100px]">
                 <thead className="bg-accent text-white h-[60px]">
                     <tr>
-                        <th>Order ID</th>
-                        <th>Date</th>
+                        <th></th>
                         <th>Email</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>City</th>
-                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Email Verification</th>
                         <th>Status</th>
-                        <th>Item count</th>
-                        <th>Total</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {orders.map((item) => {
+                    {users.map((item) => {
                         return (
-                            <tr key={item.orderId} className="odd:bg-gray-200 h-[50px]">
+                            <tr key={item.email} className="odd:bg-gray-200 h-[50px]">
                                 
-                                <td>{item.orderId}</td>
-                                <td>{formatTimestamp(item.date)}</td>
+                                <td>
+                                    <img src={item.image} className="h-[40px] w-[40px] p-2 border border-accent m-1 rounded-full" />
+                                </td>
                                 <td>{item.email}</td>
                                 <td>{item.firstName}</td>
                                 <td>{item.lastName}</td>
-                                <td>{item.city}</td>
-                                <td>{item.phone}</td>
-                                <td>{item.status}</td>
-                                <td>{item.items.length}</td>
-                                <td>{getFormattedPrice(item.totalAmount)}</td>
+                                <td>{item.isAdmin?"Admin":"User"}</td>
+                                <td>{item.isEmailVerified?"Verified":"Not Verified"}</td>
+                                <td>{item.isBlocked?"Blocked":"Active"}</td>
                                 <td>
-                                    <div className="flex justify-center items-center gap-2">
-                                        <AdminOrderDetailsModal order={item} refresh={() => setIsLoading(true)} />
-                                    </div>
-                                    
+                                    <BlockUserModal refresh={() => setIsLoading(true)} user={item}/>
+                                    <ChangeRoleOfUserModal refresh={() => setIsLoading(true)} user={item}/>                                                              
                                 </td>
                             </tr>
                         );
@@ -133,7 +126,7 @@ export default function AdminOrdersPage() {
                             setIsLoading(true)
                         }}
                     className="h-full px-4 hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer" >
-                    Next &gt;&gt;
+                        Next &gt;&gt;
                     </button>
                 </div>
             </div>
