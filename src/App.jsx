@@ -7,12 +7,50 @@ import { Route, Routes } from 'react-router-dom';
 import AdminPage from './pages/adminPage';
 import TestPage from './pages/testPage';
 import './index.css'
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import UserContext from './context/userContext';
+import { useEffect, useState } from 'react';
+import api from './lib/api';
 
 function App() {
 
+  const [user, setUser] = useState(null);
+  const [userLoadingFinished, setUserLoadingFinished] = useState(false);
+
+  useEffect(() => {
+
+		const token = localStorage.getItem("token");
+
+		api
+			.get("/users/me", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((res) => {
+				setUser(res.data.user);
+				setUserLoadingFinished(true);
+			})
+			.catch(() => {
+				toast.error("Please login again");
+				localStorage.removeItem("token");
+				setUser(null);
+				setUserLoadingFinished(true);
+			});
+	}, []);
+
 
   return (
+
+    <UserContext value={
+      { 
+        
+        user : user,
+        setUser : setUser,
+        userLoadingFinished: userLoadingFinished
+
+      }
+      }>
     <div className="w-full h-screen bg-primary" >
       <Toaster position="top-right"/>
       <Routes>
@@ -22,9 +60,9 @@ function App() {
         <Route path = "/admin/*" element = {<AdminPage />} />
         <Route path = "/test" element = {<TestPage />} />
       </Routes>
-      
-      
+
     </div>
+    </UserContext>
   )
 }
 
