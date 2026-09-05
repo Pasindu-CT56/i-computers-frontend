@@ -12,7 +12,7 @@ export default function CartPage() {
                 cart.map(
                     (item , index)=>{
                         return (
-                            <div key={index} className="w-[550px] min-h-[130px] bg-white my-4 shadow-md rounded-md overflow-hidden flex flex-row">
+                            <div key={index} className="w-full lg:w-[550px] min-h-[130px] bg-white my-4 shadow-md rounded-md overflow-hidden flex flex-row">
                                 <img src={item.product.image} className="h-full w-[130px] object-cover" />
                                 <div className="w-[420px] h-full p-1 flex flex-col">
 
@@ -52,7 +52,8 @@ export default function CartPage() {
                 )
             }
             
-            <div className="w-[550px] min-h-[90px] fixed bottom-2 bg-white shadow-accent my-4 shadow-sm rounded-md overflow-hidden flex flex-row items-center justify-between px-2">
+            <div  className="w-full lg:w-[550px] min-h-[130px]  my-4  rounded-md overflow-hidden flex lg:hidden flex-row"></div>
+            <div className="w-full lg:w-[550px] min-h-[90px] fixed bottom-[80px] lg:bottom-2 bg-white shadow-accent my-4 shadow-sm rounded-md overflow-hidden flex flex-row items-center justify-between px-2">
                 <Link state={ cart} to="/checkout" className="bg-accent/75 hover:bg-accent transition-colors duration-300 text-white font-semibold px-4 py-2 rounded-md">
                     Checkout
                 </Link>

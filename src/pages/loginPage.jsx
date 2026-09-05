@@ -1,8 +1,10 @@
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from "../lib/api";
+import { useGoogleLogin } from "@react-oauth/google";
+import UserContext from "../context/userContext";
 
 
 
@@ -10,6 +12,41 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const userData = useContext(UserContext);
+
+    const googleLogin = useGoogleLogin({
+        onSuccess:(response) => {
+            console.log(response);
+            console.log(response.access_token);
+
+            api.post("/users/google", {
+                accessToken: response.access_token
+            }).then((res) => {
+                console.log(res)
+                toast.success("Login successful");
+                localStorage.setItem("token", res.data.token);
+
+                userData.setUser(res.data.user);
+        
+                if(res.data.isAdmin) {
+                    navigate("/admin");
+                }else{
+                    navigate("/");
+                }
+
+            }
+        ).catch(
+            (err) => {
+                console.log(err);
+                toast.error("Google login failed");
+            }
+        )
+        },
+        onError: (error) => {
+            console.log(error);
+            toast.error("Google login failed");
+        }
+    });
     const navigate = useNavigate();
 
     function handleLogin() {
@@ -36,6 +73,8 @@ export default function LoginPage() {
             //browser store
 
             localStorage.setItem("token", res.data.token);
+
+            userData.setUser(res.data.user);
 
             if(res.data.isAdmin) {
                 navigate("/admin");
@@ -79,7 +118,9 @@ export default function LoginPage() {
 
                 <button onClick={handleLogin} className="w-full h-12 bg-accent text-white rounded-lg mt-5 font-bold">Login</button>
                 <p className="w-full  text-right">Do not have an account? register <Link to="/register" className="text-accent font-bold ">here</Link></p>
-                <button  className="w-full h-12 bg-secondary/20 text-secondary rounded-lg mt-5 font-bold flex items-center justify-center gap-2 hover:bg-secondary hover:text-white tracking-normal"><FcGoogle />Login with Google</button>
+                <button  className="w-full h-12 bg-secondary/20 text-secondary rounded-lg mt-5 font-bold flex items-center justify-center gap-2 hover:bg-secondary hover:text-white tracking-normal"
+                onClick={googleLogin}>
+                    <FcGoogle />Login with Google</button>
 
 
 

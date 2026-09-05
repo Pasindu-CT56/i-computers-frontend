@@ -11,6 +11,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import UserContext from './context/userContext';
 import { useEffect, useState } from 'react';
 import api from './lib/api';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
 
@@ -41,7 +42,7 @@ function App() {
 
 
   return (
-
+    <GoogleOAuthProvider clientId="591984099111-gc0n3gjogdj3k3fkmrn2km67qc7kotpt.apps.googleusercontent.com">
     <UserContext value={
       { 
         
@@ -63,7 +64,11 @@ function App() {
 
     </div>
     </UserContext>
+    </GoogleOAuthProvider>
   )
 }
 
 export default App
+
+
+// 591984099111-gc0n3gjogdj3k3fkmrn2km67qc7kotpt.apps.googleusercontent.com
