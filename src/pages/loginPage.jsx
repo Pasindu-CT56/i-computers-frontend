@@ -77,7 +77,7 @@ export default function LoginPage() {
             userData.setUser(res.data.user);
 
             if(res.data.isAdmin) {
-                navigate("/admin");
+                navigate("/admin" , { replace: true });
             }else{
                 navigate("/");
 

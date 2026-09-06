@@ -1,13 +1,24 @@
 import { BsBox, BsCart2 } from "react-icons/bs";
 import { LuUsersRound } from "react-icons/lu";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import AdminProductsPage from "./admin/adminProductsPage";
 import AddProductForm from "./admin/adminAddProductForm";
 import EditProductForm from "./admin/adminEditProductForm";
 import AdminOrdersPage from "./admin/adminOrdersPage";
 import AdminUsersPage from "./admin/adminUsersPage";
+import { useContext, useEffect } from "react";
+import UserContext from "../context/userContext";
 
 export default function AdminPage() {
+
+    const userData = useContext(UserContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!userData.user || !userData.user.isAdmin){
+            navigate("/login");
+        }
+    }, [userData, navigate]);
     return (
         <div className="flex w-full h-full ">
             <div className="flex flex-col shadow-2xl text-secondary w-[360px]  h-full ">

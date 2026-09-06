@@ -12,6 +12,7 @@ import UserContext from './context/userContext';
 import { useEffect, useState } from 'react';
 import api from './lib/api';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import ResetPasswordPage from './pages/resetPassword';
 
 function App() {
 
@@ -58,6 +59,7 @@ function App() {
         <Route path = "/*" element = {<HomePage />} />
         <Route path = "/login" element = {<LoginPage />} />
         <Route path = "/register" element = {<RegisterPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path = "/admin/*" element = {<AdminPage />} />
         <Route path = "/test" element = {<TestPage />} />
       </Routes>
