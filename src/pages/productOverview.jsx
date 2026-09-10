@@ -9,6 +9,7 @@ import { FaAngleRight } from "react-icons/fa";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 import getFormattedPrice from "../lib/price-format";
 import { addToCart } from "../lib/cart";
+import ReviewSection from "../components/reviewSection";
 
 export default function ProductOverview() {
 
@@ -127,9 +128,16 @@ export default function ProductOverview() {
                                     }
                                 }>Buy Now</button>
                         </div>
+
+                        {
+                        product!==null&&
+                        <ReviewSection productId={product.productID} />
+                    }
                     </div>
                     
                 </div>
+
+                
             }
             {
                 product===null&&!loading&&
