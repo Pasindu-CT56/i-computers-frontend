@@ -128,11 +128,12 @@ export default function ProductOverview() {
                                     }
                                 }>Buy Now</button>
                         </div>
+                        <div className="w-full h-full overflow-y-auto mt-4">
+                            {
+                                <ReviewSection productId={product.productID} />
+                            }
 
-                        {
-                        product!==null&&
-                        <ReviewSection productId={product.productID} />
-                    }
+                        </div>
                     </div>
                     
                 </div>

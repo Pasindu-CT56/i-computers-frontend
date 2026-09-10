@@ -46,6 +46,7 @@ export default function ReviewSection(props) {
     const [myRating, setMyRating] = useState(0);
     const [myComment, setMyComment] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const [hasReviewed, setHasReviewed] = useState(false);
 
     useEffect(() => {
 
@@ -64,6 +65,7 @@ export default function ReviewSection(props) {
                     if (existingReview) {
                         setMyRating(existingReview.rating);
                         setMyComment(existingReview.comment);
+                        setHasReviewed(true);
                     }
                 }
 
@@ -101,11 +103,41 @@ export default function ReviewSection(props) {
             );
 
             toast.success("Review submitted, thank you!");
+            setHasReviewed(true);
             setLoading(true);
 
         } catch (err) {
             console.log(err);
             toast.error("Failed to submit review");
+        }
+
+        setSubmitting(false);
+    }
+
+    async function handleDeleteReview() {
+
+        const confirmed = window.confirm("Are you sure you want to delete your review?");
+        if (!confirmed) return;
+
+        setSubmitting(true);
+        const token = localStorage.getItem("token");
+
+        try {
+
+            await api.delete(
+                "/reviews/" + productId,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            toast.success("Review deleted");
+            setMyRating(0);
+            setMyComment("");
+            setHasReviewed(false);
+            setLoading(true);
+
+        } catch (err) {
+            console.log(err);
+            toast.error("Failed to delete review");
         }
 
         setSubmitting(false);
@@ -126,7 +158,7 @@ export default function ReviewSection(props) {
             {userData.user != null && (
                 <div className="w-full max-w-[500px] bg-white rounded-md shadow-md p-4 mb-6">
                     <h3 className="font-semibold text-secondary mb-2">
-                        {myRating > 0 ? "Update your review" : "Leave a review"}
+                        {hasReviewed ? "Update your review" : "Leave a review"}
                     </h3>
                     <StarRow rating={myRating} onSelect={setMyRating} size="text-3xl" />
                     <textarea
@@ -140,8 +172,17 @@ export default function ReviewSection(props) {
                         disabled={submitting}
                         className="bg-accent text-white font-semibold px-4 py-2 rounded-md hover:bg-accent-dark transition-colors duration-300 disabled:opacity-50"
                     >
-                        {myRating > 0 ? "Update Review" : "Submit Review"}
+                        {hasReviewed ? "Update Review" : "Submit Review"}
                     </button>
+                    {hasReviewed && (
+                        <button
+                            onClick={handleDeleteReview}
+                            disabled={submitting}
+                            className="ml-2 bg-white text-accent border-2 border-accent font-semibold px-4 py-2 rounded-md hover:bg-red-50 transition-colors duration-300 disabled:opacity-50"
+                        >
+                            Delete Review
+                        </button>
+                    )}
                 </div>
             )}
 
